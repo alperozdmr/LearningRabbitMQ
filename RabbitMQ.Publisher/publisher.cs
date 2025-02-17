@@ -31,5 +31,26 @@ class publisher
 
         ////Console.WriteLine("Mesaj gönderildi");
         //Console.ReadLine();
+
+
+        //****************** 3. Ders Exchange Types ***************//
+        //1. Fanout 
+        var factory = new ConnectionFactory();
+        factory.Uri = new Uri("amqps://klihfdct:Tp5GHLQjqsmXgG_1544BvHhTgdnKTkNs@kebnekaise.lmq.cloudamqp.com/klihfdct");
+
+        using var connection = factory.CreateConnection();
+        var channel = connection.CreateModel();
+
+        channel.ExchangeDeclare("logs-fanout",durable:true,type:ExchangeType.Fanout);
+
+        Enumerable.Range(1, 50).ToList().ForEach(x =>
+        {
+            string message = $"log {x}";
+            var messageBody = Encoding.UTF8.GetBytes(message);
+            channel.BasicPublish("logs-fanout","", null, messageBody);
+
+            Console.WriteLine($"Mesaj gönderildi : {message}");
+        });
+        Console.ReadLine();
     }
 }
