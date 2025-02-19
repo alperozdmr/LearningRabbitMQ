@@ -1,6 +1,5 @@
 ﻿using RabbitMQ.Client;
 using System.Text;
-using static publisher;
 
 class publisher
 {
@@ -16,30 +15,25 @@ class publisher
     {
 
         //****************** 3. Ders Exchange Types ***************//
-        //3.Topic
+        //4.Header
         var factory = new ConnectionFactory();
         factory.Uri = new Uri("amqps://klihfdct:Tp5GHLQjqsmXgG_1544BvHhTgdnKTkNs@kebnekaise.lmq.cloudamqp.com/klihfdct");
 
         using var connection = factory.CreateConnection();
         var channel = connection.CreateModel();
 
-        channel.ExchangeDeclare("logs-topic", durable: true, type: ExchangeType.Topic);
+        channel.ExchangeDeclare("header-exchange", durable: true, type: ExchangeType.Headers);
 
-        Random rnd = new Random();
+        Dictionary<string,object> headers = new Dictionary<string, object>();
+        headers.Add("format", "pdf");
+        headers.Add("shape2", "a4");
 
-        Enumerable.Range(1, 50).ToList().ForEach(x =>
-        {
-            LogNames log1 = (LogNames)rnd.Next(1, 5);
-            LogNames log2 = (LogNames)rnd.Next(1, 5);
-            LogNames log3 = (LogNames)rnd.Next(1, 5);
+        var properties = channel.CreateBasicProperties();
+        properties.Headers = headers;
+        channel.BasicPublish("header-exchange", string.Empty, properties,
+            Encoding.UTF8.GetBytes("header mesajım"));
 
-            var rootKey = $"{log1}.{log2}.{log3}";
-            string message = $"log-type :{log1}.{log2}.{log3}";
-            var messageBody = Encoding.UTF8.GetBytes(message);
-            channel.BasicPublish("logs-topic", rootKey, null, messageBody);
-
-            Console.WriteLine($"log gönderildi : {message}");
-        });
+        Console.WriteLine("Mesaj gönderilmişit");
         Console.ReadLine();
     }
 
@@ -119,6 +113,33 @@ class publisher
 
 //    var messageBody = Encoding.UTF8.GetBytes(message);
 //    channel.BasicPublish("logs-direct", rootKey, null, messageBody);
+
+//    Console.WriteLine($"log gönderildi : {message}");
+//});
+//Console.ReadLine();
+
+/**********************************************************/
+//3.Topic
+//var factory = new ConnectionFactory();
+//factory.Uri = new Uri("amqps://klihfdct:Tp5GHLQjqsmXgG_1544BvHhTgdnKTkNs@kebnekaise.lmq.cloudamqp.com/klihfdct");
+
+//using var connection = factory.CreateConnection();
+//var channel = connection.CreateModel();
+
+//channel.ExchangeDeclare("logs-topic", durable: true, type: ExchangeType.Topic);
+
+//Random rnd = new Random();
+
+//Enumerable.Range(1, 50).ToList().ForEach(x =>
+//{
+//    LogNames log1 = (LogNames)rnd.Next(1, 5);
+//    LogNames log2 = (LogNames)rnd.Next(1, 5);
+//    LogNames log3 = (LogNames)rnd.Next(1, 5);
+
+//    var rootKey = $"{log1}.{log2}.{log3}";
+//    string message = $"log-type :{log1}.{log2}.{log3}";
+//    var messageBody = Encoding.UTF8.GetBytes(message);
+//    channel.BasicPublish("logs-topic", rootKey, null, messageBody);
 
 //    Console.WriteLine($"log gönderildi : {message}");
 //});

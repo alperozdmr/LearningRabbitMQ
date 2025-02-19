@@ -8,7 +8,7 @@ class subscriber
     {
 
         //****************** 3. Ders Exchange Types ***************//
-        // 3.topic
+        // 4.header
         var factory = new ConnectionFactory();
         factory.Uri = new Uri("amqps://klihfdct:Tp5GHLQjqsmXgG_1544BvHhTgdnKTkNs@kebnekaise.lmq.cloudamqp.com/klihfdct");
 
@@ -20,12 +20,12 @@ class subscriber
         var subscriber = new EventingBasicConsumer(channel);
 
         var queueName = channel.QueueDeclare().QueueName;
-        var routeKey = "*.Error.*";
-        var routeKey2 = "Info.#"; // burdaki '#' bu sembol sonrası ne olursa olsun anlamnında
-        // '*' sadece bir tanesi için '#' birden fazla için kullanılıyor
-        var routeKey3 = "*.*.Warning";
-
-        channel.QueueBind(queueName, "logs-topic", routeKey2);
+        Dictionary<string,object> headers = new Dictionary<string, object>();
+        headers.Add("format", "pdf");
+        headers.Add("shape", "a4");
+        headers.Add("x-match", "any");
+        channel.ExchangeDeclare("header-exchange", durable: true, type: ExchangeType.Headers);
+        channel.QueueBind(queueName, "header-exchange", string.Empty,headers);
         channel.BasicConsume(queueName, false, subscriber);
 
         Console.WriteLine("loglar dinleniyor");
@@ -35,8 +35,6 @@ class subscriber
             var message = Encoding.UTF8.GetString(e.Body.ToArray());
             Thread.Sleep(1000);
             Console.WriteLine(message);
-
-            File.AppendAllText("log-critical.txt", message + "\n");
             channel.BasicAck(e.DeliveryTag, false);
         };
 
@@ -123,6 +121,41 @@ class subscriber
 ////direct type ı görebilmek için kullanıllır
 
 //var queueName = "direct-queuq-Error";
+//channel.BasicConsume(queueName, false, subscriber);
+
+//Console.WriteLine("loglar dinleniyor");
+
+//subscriber.Received += (object? sender, BasicDeliverEventArgs e) =>
+//{
+//    var message = Encoding.UTF8.GetString(e.Body.ToArray());
+//    Thread.Sleep(1000);
+//    Console.WriteLine(message);
+
+//    File.AppendAllText("log-critical.txt", message + "\n");
+//    channel.BasicAck(e.DeliveryTag, false);
+//};
+
+//Console.ReadLine();
+
+/*******************************************************/
+// 3.topic
+//var factory = new ConnectionFactory();
+//factory.Uri = new Uri("amqps://klihfdct:Tp5GHLQjqsmXgG_1544BvHhTgdnKTkNs@kebnekaise.lmq.cloudamqp.com/klihfdct");
+
+//using var connection = factory.CreateConnection();
+//var channel = connection.CreateModel();
+
+//channel.BasicQos(0, 1, false);
+
+//var subscriber = new EventingBasicConsumer(channel);
+
+//var queueName = channel.QueueDeclare().QueueName;
+//var routeKey = "*.Error.*";
+//var routeKey2 = "Info.#"; // burdaki '#' bu sembol sonrası ne olursa olsun anlamnında
+//                          // '*' sadece bir tanesi için '#' birden fazla için kullanılıyor
+//var routeKey3 = "*.*.Warning";
+
+//channel.QueueBind(queueName, "logs-topic", routeKey2);
 //channel.BasicConsume(queueName, false, subscriber);
 
 //Console.WriteLine("loglar dinleniyor");
