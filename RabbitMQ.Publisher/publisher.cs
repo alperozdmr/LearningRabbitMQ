@@ -1,5 +1,7 @@
 ﻿using RabbitMQ.Client;
+using RabbitMQ.Shared;
 using System.Text;
+using System.Text.Json;
 
 class publisher
 {
@@ -14,7 +16,7 @@ class publisher
     static void Main(string[] args)
     {
 
-        //****************** 3. Ders Exchange Types ***************//
+        //****************** 4. Context Typeları Mesaj Olarak İletmek ***************//
         //4.Header
         var factory = new ConnectionFactory();
         factory.Uri = new Uri("amqps://klihfdct:Tp5GHLQjqsmXgG_1544BvHhTgdnKTkNs@kebnekaise.lmq.cloudamqp.com/klihfdct");
@@ -30,8 +32,13 @@ class publisher
 
         var properties = channel.CreateBasicProperties();
         properties.Headers = headers;
+        properties.Persistent = true;// Mesajları kalıcı hale getirir
+
+        var product = new Product { Id=1 ,Name="Kalem",Price=100,Stock=10};
+        var productJsonString = JsonSerializer.Serialize(product);
+
         channel.BasicPublish("header-exchange", string.Empty, properties,
-            Encoding.UTF8.GetBytes("header mesajım"));
+            Encoding.UTF8.GetBytes(productJsonString));
 
         Console.WriteLine("Mesaj gönderilmişit");
         Console.ReadLine();
@@ -143,4 +150,27 @@ class publisher
 
 //    Console.WriteLine($"log gönderildi : {message}");
 //});
+//Console.ReadLine();
+
+/***************************************************************/
+//4.Header
+//var factory = new ConnectionFactory();
+//factory.Uri = new Uri("amqps://klihfdct:Tp5GHLQjqsmXgG_1544BvHhTgdnKTkNs@kebnekaise.lmq.cloudamqp.com/klihfdct");
+
+//using var connection = factory.CreateConnection();
+//var channel = connection.CreateModel();
+
+//channel.ExchangeDeclare("header-exchange", durable: true, type: ExchangeType.Headers);
+
+//Dictionary<string, object> headers = new Dictionary<string, object>();
+//headers.Add("format", "pdf");
+//headers.Add("shape2", "a4");
+
+//var properties = channel.CreateBasicProperties();
+//properties.Headers = headers;
+//properties.Persistent = true;// Mesajları kalıcı hale getirir
+//channel.BasicPublish("header-exchange", string.Empty, properties,
+//    Encoding.UTF8.GetBytes("header mesajım"));
+
+//Console.WriteLine("Mesaj gönderilmişit");
 //Console.ReadLine();

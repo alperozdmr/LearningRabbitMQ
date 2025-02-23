@@ -1,13 +1,15 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMQ.Shared;
 using System.Text;
+using System.Text.Json;
 
 class subscriber
 {
     static void Main(string[] args)
     {
 
-        //****************** 3. Ders Exchange Types ***************//
+        //****************** 4. Context Typeları Mesaj Olarak İletmek ***************//
         // 4.header
         var factory = new ConnectionFactory();
         factory.Uri = new Uri("amqps://klihfdct:Tp5GHLQjqsmXgG_1544BvHhTgdnKTkNs@kebnekaise.lmq.cloudamqp.com/klihfdct");
@@ -33,8 +35,10 @@ class subscriber
         subscriber.Received += (object? sender, BasicDeliverEventArgs e) =>
         {
             var message = Encoding.UTF8.GetString(e.Body.ToArray());
+
+            Product product = JsonSerializer.Deserialize<Product>(message);
             Thread.Sleep(1000);
-            Console.WriteLine(message);
+            Console.WriteLine($"Gelen Mesaj : {product.Id }-{product.Name }-{product.Price }-{product.Stock }");
             channel.BasicAck(e.DeliveryTag, false);
         };
 
@@ -167,6 +171,39 @@ class subscriber
 //    Console.WriteLine(message);
 
 //    File.AppendAllText("log-critical.txt", message + "\n");
+//    channel.BasicAck(e.DeliveryTag, false);
+//};
+
+//Console.ReadLine();
+
+/********************************************************/
+// 4.header
+//var factory = new ConnectionFactory();
+//factory.Uri = new Uri("amqps://klihfdct:Tp5GHLQjqsmXgG_1544BvHhTgdnKTkNs@kebnekaise.lmq.cloudamqp.com/klihfdct");
+
+//using var connection = factory.CreateConnection();
+//var channel = connection.CreateModel();
+
+//channel.BasicQos(0, 1, false);
+
+//var subscriber = new EventingBasicConsumer(channel);
+
+//var queueName = channel.QueueDeclare().QueueName;
+//Dictionary<string, object> headers = new Dictionary<string, object>();
+//headers.Add("format", "pdf");
+//headers.Add("shape", "a4");
+//headers.Add("x-match", "any");
+//channel.ExchangeDeclare("header-exchange", durable: true, type: ExchangeType.Headers);
+//channel.QueueBind(queueName, "header-exchange", string.Empty, headers);
+//channel.BasicConsume(queueName, false, subscriber);
+
+//Console.WriteLine("loglar dinleniyor");
+
+//subscriber.Received += (object? sender, BasicDeliverEventArgs e) =>
+//{
+//    var message = Encoding.UTF8.GetString(e.Body.ToArray());
+//    Thread.Sleep(1000);
+//    Console.WriteLine(message);
 //    channel.BasicAck(e.DeliveryTag, false);
 //};
 

@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ.Publisher", "RabbitMQ.Publisher\RabbitMQ.Publisher.csproj", "{944F6202-C488-4F94-A000-736E7C3B270D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ.Publisher", "RabbitMQ.Publisher\RabbitMQ.Publisher.csproj", "{944F6202-C488-4F94-A000-736E7C3B270D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ.Subscriber", "RabbitMQ.Subscriber\RabbitMQ.Subscriber.csproj", "{D52C3F9B-E765-4470-829C-9BE1B3D47696}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ.Subscriber", "RabbitMQ.Subscriber\RabbitMQ.Subscriber.csproj", "{D52C3F9B-E765-4470-829C-9BE1B3D47696}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ.Shared", "RabbitMQ.Shared\RabbitMQ.Shared.csproj", "{F1D60BBA-943A-4BE9-8F9E-3786B6F65421}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ.WebWaterMark", "RabbitMQ.WebWaterMark\RabbitMQ.WebWaterMark.csproj", "{E2A09591-A1C4-48D8-A3E1-A58A57084734}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{D52C3F9B-E765-4470-829C-9BE1B3D47696}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D52C3F9B-E765-4470-829C-9BE1B3D47696}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D52C3F9B-E765-4470-829C-9BE1B3D47696}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1D60BBA-943A-4BE9-8F9E-3786B6F65421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1D60BBA-943A-4BE9-8F9E-3786B6F65421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1D60BBA-943A-4BE9-8F9E-3786B6F65421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1D60BBA-943A-4BE9-8F9E-3786B6F65421}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2A09591-A1C4-48D8-A3E1-A58A57084734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2A09591-A1C4-48D8-A3E1-A58A57084734}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2A09591-A1C4-48D8-A3E1-A58A57084734}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2A09591-A1C4-48D8-A3E1-A58A57084734}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
