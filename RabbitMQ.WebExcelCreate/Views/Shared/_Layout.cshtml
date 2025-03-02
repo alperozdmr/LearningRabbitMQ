@@ -60,6 +60,34 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var connection = new signalR.HubConnectionBuilder().withUrl("/myhub").build();
+
+            start();
+            function start(){
+                connection.start().then().catch((err)=>{
+                    console.log(err);
+                    setTimeout(()=>start(),2000);
+                });
+            }
+
+            connection.on("CompletedFile",()=>{
+                console.log("excel oluşturma bitti");
+                 swal("Excel Dosyanız hazır", "indirebilirsiniz", "success");
+            });
+
+
+        })
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
