@@ -14,7 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseInMemoryDatabase(databaseName: "productDb");
 });
-builder.Services.AddHostedService<ImageWatermarkProcessBackgroundService>();
+builder.Services.AddHostedService<ImageWatermarkProcessBackgroundService>();//backgrpun service olarak çalýþýr
 builder.Services.AddSingleton<RabbitMQClientService>();
 builder.Services.AddSingleton<RabbitMQPublisher>();
 builder.Services.AddControllersWithViews();
